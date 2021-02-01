@@ -1,0 +1,82 @@
+um install httpd php php-cli gcc glibc-common gd gd-devel net-snmp
+•	service httpd start
+•	 useradd nagios
+•	 passwd nagios
+•	  groupadd nagcmd
+•	  cat /etc/passwd
+•	  cat etc/group
+•	  usermod -a -G nagcmd nagios
+•	  usermod -a -G nagcmd apache
+•	  cat /etc/group
+•	Mkdir nagios
+•	Cd nagios
+•	
+•	INSTALLING NAGIOS CORE SERVICE
+•	 cd /opt
+•	wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.3.4.tar.gz
+•	 ls
+•	 tar xvf nagios-4.3.4.tar.gz
+•	 ls
+•	 cd nagios-4.3.4
+•	 ls
+•	  ./configure --with-command-group=nagcmd
+•	make all
+•	make install
+•	make install-init
+•	make install-config
+•	make install-webconf
+•	CONFIGURE APACHE AUTHENTICATION
+•	Setting username and password through httpd
+•	htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+•	 service httpd restart
+•	INSTALL NAGIOS PLUGIN
+•	Cd ..
+•	ls
+•	wget http://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+•	ls
+•	tar xvf  nagios-plugins-2.2.1.tar.gz
+•	ls
+•	./configure –with-nagios-user=nagios –with-nagios-group=nagios
+•	Make 
+•	Make install
+•	VERIFY AND START NAGIOS
+•	/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg 
+•	IF the command gives o error then nagios is installed perfectly. Goto next step
+•	service nagios start
+•	chkconfig --add nagios
+•	chkconfig nagios on
+•	iptables -F
+•	
+•	ACCESSING NAGIOS IN BROWSER
+•	Give the ipaddr/nagios
+•	We need to install NRPE Plugin to all the clients server and configure the nagio core service with the clients. Ie.., by server up
+CLIENT1
+•	sudo amazon-linux-extras install epel
+•	cat /etc/passwd
+•	cd /opt
+•	ls
+•	yum install epel-release
+•	sudo amazon-linux-extras install epel
+•	yum install epel-release
+•	yum install nrpe nagios-plugins-all openssl -y
+•	vi /etc/nagios/nrpe.cfg
+•	  allowed_hosts=127.0.0.1,serverip
+•	 systemctl start nrpe
+•	 chkconfig nrpe on
+•	NAGIOS SERVER
+•	vim /usr/local/nagios/etc/nagios.cfg
+•	      un comment the ( cfg_dir=/usr/local/nagios/etc/servers ) 
+•	 mkdir /usr/local/nagios/etc/servers 
+•	cd /usr/local/nagios/etc/servers 
+•	vim client.cfg
+•	        define host{
+•	         use linux-server 
+•	         host_name hostname 
+•	         alias            Node1 
+•	         address ip 
+•	        max_check_attempts 5 
+•	       check_period 24x7 
+•	        notification_interval 30
+•	        notification_period 24x7
+•	       }
+•	systemctl restart nagios
