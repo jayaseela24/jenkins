@@ -1,0 +1,16 @@
+---
+- name: creating user
+  hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+   - name: creating user Sahithi
+     user: 
+       name=Sahithi
+   - name: create a directory
+     file:
+      path: /opt/Sahithi_temp_dir 
+      state: directory
+      owner: Sahithi
+      group: Sahithi    
+      mode: 0755

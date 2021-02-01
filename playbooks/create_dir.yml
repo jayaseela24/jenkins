@@ -1,0 +1,14 @@
+---
+- name: creating directory
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+  - name: create a dir
+    file:
+      path: /home/ansadmin/testdir
+      state: directory
+      mode: 0755
+      owner: ansadmin
+      group: ansadmin
+

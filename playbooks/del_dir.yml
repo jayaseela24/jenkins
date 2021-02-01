@@ -1,0 +1,12 @@
+---
+- name: Deleting directory
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+  - name: delete a directory
+    file:
+      path: /home/ansadmin/testdir
+      state: absent
+      
+

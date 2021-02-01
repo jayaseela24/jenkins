@@ -1,0 +1,20 @@
+---
+- name: cloning repo
+  hosts: webservers
+  gather_facts: no
+  
+  tasks:
+  - name: cloning repo
+    git:
+       repo: https://jayaseela24:Sahithi2512@github.com/jayaseela24/vaulttest1.git
+       dest: /home/ansadmin/vall12
+       
+     
+   
+
+
+              
+
+
+
+           

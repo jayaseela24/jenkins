@@ -1,0 +1,13 @@
+---
+- name: Deleting files
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+  - name: delete a file
+    file:
+      path: /home/ansadmin/testfile
+      state: absent
+      
+
+
