@@ -1,0 +1,199 @@
+//https://www.sonarqube.org/downloads/ -goto 7.8 click on community edition
+Sonarcloud.io
+
+
+Sudo su –
+cd /opt
+yum install wget -y
+wget -c –header “Cookie: oraclelicense=accept-securebackup-cokie” http://download.oracle.comm/otn-pub/java/jdk/8u131-b11/d54c1d3a0954ff2b6607d07d096fa80163/jdk-8u131-linux-x64.rpm
+yum install jdk-8u131-linux-x64.rpm -y
+sudo su –
+cd /opt
+yum install wget unzip -y
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.8.zip
+unzip sonarqube-7.8zip
+ls                                                      //try the sonarqube with normal user but not root user
+useradd sonar
+visudo 
+    sonar		 ALL=(ALL)	NOPASSWD:ALL
+chown -R sonar:sonar /opt/sonarqube-7.8/
+chmod  -R 775 /opt/sonarqube-7.8/
+su – sonar
+cd  /opt/sonarqube-7.8/bin/linux-x86-64/
+ls
+./sonar.sh start
+cd bin/
+ls
+cd linux-x86-64/
+ls
+
+sh sonar.sh status	      // sonarqube is running
+copy the ip addr:9000 to the browser
+Enable the port no.9000 in the security rules
+Default credentials are admin and admin as password
+Administartation---security---force user authentication- logout      // then you wont see anything.
+Clickon Administrator-my account -security
+  Oldpassword:admin
+  New password:
+         Save
+Even after starting  also If sonar is not working then we need to go  to
+        Cd /opt/sonarqube-7.8/logs
+         ls
+       cat sonar.log
+ls -l /opt/sonarqube-7.8/temp/conf/es/elasticsearch.yml
+if the owner is root  then
+         sudo rm -rf  opt/sonarqube-7.8/temp/
+ ls                           //   now you wont see the temp folder
+cd bin/linux-x86-64/
+sh sonar.sh start
+sh sonar.sh status  --- Sonarqube is running
+Go to the browser and try to access now.
+When u click on the project            // once you analyze the project you can see here.
+Go to the maven server and then to pom file
+<properties>
+<sonar.host.url>	  </sonar.host.url>       
+<sonar.login> username  </sonar.login>
+<soanr.password> password </sonar.password>
+The command to execute sonarqube is
+ mvn sonar:sonar
+how to get the sonarqube report without maven,ant,gradle
+Now you will see a project created in sonarqube with the name tag or else with artifact id you created in the maven.
+When you click on the project you can see the full details
+Click on the codesmells to see the error
+Here the tag version comes from the pom file
+In issues tab it defines the issues which are present  in detail with projectname/ filename
+For all these languages 2390 rules are present
+Under issue we click on see rule we can see all the rules present
+Quality profiles-collection of rules apply during an analysis
+Each language having 1 quality profile i.e., sonar way
+Req- can you create a cutom quality profile with some rules
+Quality profile - create 
+     Name : paytm-qp-mt  ( but don’t give any space)
+     Language : java
+     Parent  :  None
+        Click on create
+Click on Activate more button which is on the left side    //adding the rule set
+       “@EnableAutoConfiguration” should be fine-tuned
+       “@Import’s should be preferred to “@ComponentScan”s
+      When you click on the Activate button you can see the severity level
+Now we are applying the created quality profiles to the project.
+To select the created quality profile instead of sonar way click on setting symbol which is on the last of the quality profile.
+Now the paytm-qp-mt as default for the project.
+Now to assign this go to
+        Project--administration-quality profile
+
+             Select the java  paytm-qp-mt as default profile
+Goto maven server
+          mvn sonar:sonar
+now if you run the report count is decreases because it follows only 2 rules.
+Based on the requirement we can create n no. of quality profiles.
+Quality Gates:  it shows the status whether it is passed or failed.
+It is a collection of conditions which are going to use to apply your project for analyzing.
+By default the quality gate is Sonar way.
+Click on the create button for creating the quality gate and after naming the new quality gate as 
+Paytm-qg-mt  and click on Add Condition button.
+           Is less than 80  and click on AddCondition
+If you want we can assign this created Quality Gates as default also
+Assigning this Quality Gate to the project
+          Goto project -click on Administrationfrom the drop down button select the Quality gate and                
+          select the quality gate you created.
+mvn sonar:sonar   (now here it marks as failed)
+Administration  
+    Configuration
+        C#   file with .sh
+        Java   .jav   .java   ( remove the files with .jav)
+        Security   ---- force user Authentication must be in enable
+  Creating a user
+Security users -->
+If you want to create new user then click on create user
+Login :
+Name :
+Password :
+                  Create
+I f you login to the window with new credentials you cannot see Administration option tab because the user created is a normal user
+So if you want to give the administration access then you need to login Administration user.
+Sonar-administrators and sonar-users are the predefined groups.if you want you can create group also.
+How to add the normal user as administrator user 	
+   Select the bar code under the normal user in group section- select the option as ALL
+Now you can see the normal users as administrator access
+  Now if you go to Administartionproject - select the project if you want to delete .
+   System -here you can see H2 JDBC Driver(java data base connector),compute engine,web,search engine
+  Marketplace  
+If your project as not having zero vulnerabilities and bugs then we cannot deploy it.
+Instead of giving id and password we can give token to execute the SonarQube
+  SonarQube Server-Administartor- security user-select any user - under token select the bar code
+Generate the token (SonarQube token)- copy the link- instead of username we can give the token as  <sonar.login>token 
+</sonar.host.url>
+</properties>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F:\practice\maven\project1>
+Sonar runner   - set the env var
+Sonarqube-cd /bin - start the sonar qube
+Go to browser  :9000
+Sonar scanner :conf/sonar scanner.properties – in this specify the project key,version ,url(near sonar source)    Sonar.projectKey=JavaProject
+   Sonar.projectName=Java-Project
+  Sonar.projectVersion=1.0
+go to the url path  and  run the sonar
+Sonar.sources=f:/practice/mavne/project1/src/main/java/devops
+In maven goto  conf/settings.xml and add this
+             <pluginGroups>
+              <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+              </pluginGroups>
+And under profiles in the same file
+                  <profile>
+                      <id>sonar</id>
+                        <activation>
+                                <activeByDefault>true</activeByDefault>
+                           </activation>
+                                   <properties>
+                                         <sonar.host.url>        
+                             http://localhost:9000
+                                   </sonar.host.url>     
+                                      </properties>
+                                    </profile>
+Now stop the sonarqube server and run.
+Goto  maven server where pom file is present and run the mvn sonar:sonar command
